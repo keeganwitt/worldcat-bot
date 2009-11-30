@@ -94,7 +94,7 @@ public class WorldCat_Bot_Servlet extends AbstractRobotServlet {
         // replace request text with url(s) in blip
         searches.eachWithIndex() {String search, int i ->
             int place = text.indexOf(search)
-            textView.replace(new Range(place, place + search.length()), urls[i])
+            textView.setAnnotation(new Range(place, place + search.length()), "link/manual", urls[i]) 
         }
     }
 }
