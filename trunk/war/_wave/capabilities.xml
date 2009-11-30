@@ -5,5 +5,5 @@
 		<w:capability name="BLIP_SUBMITTED" content="true" />
 	</w:capabilities>
 	<w:profile name="WorldCat-Bot" imageurl="/icon.gif" profileurl="/_wave/profile.xml"/>
-	<w:version>1-0</w:version>
+	<w:version>1-1</w:version>
 </w:robot>
