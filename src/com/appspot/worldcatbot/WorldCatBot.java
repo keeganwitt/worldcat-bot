@@ -3,7 +3,6 @@
  */
 package com.appspot.worldcatbot;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,10 +42,10 @@ public class WorldCatBot extends AbstractRobot {
 	public void onWaveletSelfAdded(WaveletSelfAddedEvent event) {
 		event.getWavelet().reply("\nHi, I'm WorldCat-Bot."
 			+ "\nType [wc:(author|title|isbn|issn|keyword|number|subject) {search terms}] to search WorldCat."
-			+ "\nYou can only specify one field (author, title, etc). If you don't specify a field to search by, I'll search them all.");
+			+ " You can only specify one field (author, title, etc).");
 	}
 
-	@Capability(filter = "\\[.*\\]")
+	@Capability(filter = "\\[wc:\\w.+\\]")
 	@Override
 	public void onDocumentChanged(DocumentChangedEvent event) {
 		processBlip(event.getBlip());
@@ -55,14 +54,13 @@ public class WorldCatBot extends AbstractRobot {
 	/**
 	 * Method to parse and replace text in blip
 	 * 
-	 * @param blip
-	 *            the blip to parse
+	 * @param blip the blip to parse
 	 */
 	private void processBlip(Blip blip) {
 		String text = blip.getContent();
 
 		// find all the search requests in the blip's text
-		Pattern pattern = Pattern.compile("\\[wc(:all|:author|:title|:isbn|:issn|:keyword|:number|:subject)? [^\\]]+\\]");
+		Pattern pattern = Pattern.compile("\\[wc:(all|author|title|isbn|issn|keyword|number|subject)\\s+[^\\]]+\\]");
 		Matcher matcher = pattern.matcher(text);
 		while (matcher.find()) {
 			String match = matcher.group();
@@ -91,9 +89,6 @@ public class WorldCatBot extends AbstractRobot {
 				url = "http://www.worldcat.org/search?qt=worldcat_org_all&q=" + query;
 			}
 
-			if (LOG.isLoggable(Level.INFO)) {
-			    LOG.info("Added hyperlink to " + match + ".");
-			}
 			blip.first(match).annotate("link/manual", url);
 		}
 	}
